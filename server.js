@@ -1,4 +1,3 @@
-const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -6,6 +5,7 @@ const passport = require("passport");
 
 const users = require("./routes/api/users");
 const games = require("./routes/api/games");
+const groups = require("./routes/api/groups");
 
 const app = express();
 
@@ -32,16 +32,27 @@ mongoose
 // Passport middleware
 app.use(passport.initialize());
 
+// Allow CORS
+const allowCrossDomain = function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+};
+
+app.use(allowCrossDomain);
+
+
 // Passport config
 require("./config/passport")(passport);
 
 // Routes
+app.get("/ping", (req, res) => {
+  res.sendStatus(200);
+});
 app.use("/api/users", users);
 app.use("/api/v1/games", games);
-
-app.use("*", (req, res) =>
- res.sendFile(path.join(__dirname, "../client/build/index.html"))
-);
+app.use("/api/groups", groups);
 
 const port = process.env.PORT || 5000;
 
