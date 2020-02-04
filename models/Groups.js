@@ -15,6 +15,10 @@ const GroupSchema = new Schema({
       type: String,
       required: true
   },
+  gameType: {
+    type: String,
+    required: true
+  },
   minimumAge: {
     type: Number
   },

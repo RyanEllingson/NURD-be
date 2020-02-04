@@ -21,4 +21,11 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/type", (req, res) => {
+  Groups.find({ gameType: req.body.gameType })
+  .then(groups => {
+    res.json(groups);
+  });
+});
+
 module.exports = router;
