@@ -15,14 +15,13 @@ router.get("/board", (req, res) => {
 });
 
 router.get("/video", async function(req, res) {
-  const apiKey = "6e8c7cd85d2a38d0c9484d9a593046a7";
   const queryUrl = "https://api-v3.igdb.com/games";
   const response = await axios({
     url: queryUrl,
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'user-key': apiKey
+      'user-key': keys.videoApiKey
     },
     data: `fields name; search "${req.body.name}";`
   });
