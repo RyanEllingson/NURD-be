@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
 });
 
 // Retrieve all groups with specified game type
-router.get("/type", (req, res) => {
+router.post("/type", (req, res) => {
   Groups.find({ gameType: req.body.gameType })
   .then(groups => {
     res.json(groups);
