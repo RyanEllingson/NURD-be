@@ -7,14 +7,14 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 // Search for games from third-party APIs
-router.get("/board", (req, res) => {
+router.post("/board", (req, res) => {
   const queryUrl = `https://www.boardgameatlas.com/api/search?name=${req.body.name}&fuzzy_match=true&client_id=SB1VGnDv7M`;
   axios.get(queryUrl).then(response => {
     res.json(response.data);
   }).catch(err => console.log(err));
 });
 
-router.get("/video", async function(req, res) {
+router.post("/video", async function(req, res) {
   const queryUrl = "https://api-v3.igdb.com/games";
   const response = await axios({
     url: queryUrl,

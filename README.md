@@ -3,10 +3,10 @@
 # How to query the backend
 
 Games:
-To perform a search for a board game, send a GET request to "/api/games/board"
+To perform a search for a board game, send a POST request to "/api/games/board"
 The req.body should be an object with a key "name" which is the name you want to search for.
 
-To perform a search for a board game, send a GET request to "/api/games/video"
+To perform a search for a board game, send a POST request to "/api/games/video"
 The req.body should be an object with a key "name" which is the name you want to search for.
 
 Groups:
@@ -46,7 +46,7 @@ organizer: {
 
   In order to retrieve all groups in the database, send a GET request to "/api/groups"
   
-  In order to retrieve all groups with a specified gameType, send a GET request to "/api/groups/type"
+  In order to retrieve all groups with a specified gameType, send a POST request to "/api/groups/type"
   The req.body should be an object with key "gameType" whose value is the type of groups you would like to get.
 
   In order to add a member to a group, send a PUT request to "/api/groups/add-member/:id" where ":id" is the id number of the group to which you would like to add a member.
