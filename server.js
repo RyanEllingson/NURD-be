@@ -52,7 +52,8 @@ app.get("/ping", (req, res) => {
 });
 app.use("/api/users", users);
 app.use("/api/games", games);
-app.use("/api/groups", groups);
+groups.api(app);
+// app.use("/api/groups", groups.api);
 
 const port = process.env.PORT || 5000;
 

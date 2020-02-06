@@ -7,67 +7,79 @@ const keys = require("../../config/keys");
 
 const Groups = require("../../models/Groups");
 
-// Create a new group
-router.post("/", (req, res) => {
-  console.log(req.body);
-  Groups.create(req.body).then(group => {
+module.exports = {
+  createGroupApi: async function(req, res) {
+    const group = await Groups.create(req.body);
     res.json(group);
-  });
-});
-
-// Retrieve all groups
-router.get("/", (req, res) => {
-  Groups.find({
-  }).then(groups => {
+  },
+  getGroupsApi: async function(req, res) {
+    const groups = await Groups.find({});
     res.json(groups);
-  });
-});
-
-// Retrieve all groups with specified game type
-router.post("/type", (req, res) => {
-  Groups.find({ gameType: req.body.gameType })
-  .then(groups => {
+  },
+  getGroupsByTypeApi: async function(req, res) {
+    const groups = await Groups.find({ gameType: req.body.gameType });
     res.json(groups);
-  });
-});
-
-// Add a member to a group
-router.put("/add-member/:id", (req, res) => {
-  Groups.find({ _id: mongojs.ObjectId(req.params.id) }, (error, found) => {
-    if (error) {
-      console.log(error);
-    } else {
-      const members = found[0].currentMembers;
-      members.push(req.body.name);
-      Groups.updateOne(
-        {
-          _id: mongojs.ObjectId(req.params.id)
-        },
-        {
-          $set: {
-            currentMembers: members
+  },
+  addMemberApi: function(req, res) {
+    Groups.find({ _id: mongojs.ObjectId(req.params.id) }, (error, found) => {
+      if (error) {
+        console.log(error);
+      } else {
+        const members = found[0].currentMembers;
+        members.push(req.body.name);
+        Groups.updateOne(
+          {
+            _id: mongojs.ObjectId(req.params.id)
+          },
+          {
+            $set: {
+              currentMembers: members
+            }
+          },
+          (error, edited) => {
+            if (error) {
+              console.log(error);
+            } else {
+              res.send(edited);
+            }
           }
-        },
-        (error, edited) => {
-          if (error) {
-            console.log(error);
-          } else {
-            res.send(edited);
-          }
-        }
-      );
-    }
-  });
-});
+        );
+      }
+    })
+  },
+  deleteGroupApi: function(req, res) {
+    Groups.deleteOne({ _id: mongojs.ObjectId(req.params.id) }, (error, found) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.json(found);
+      }
+    });
+  },
+  api: function(router) {
+    // Create a new group
+    router.post("/api/groups", this.createGroupApi);
 
-router.delete("/:id", (req, res) => {
-  Groups.deleteOne({ _id: mongojs.ObjectId(req.params.id) }, (error, found) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(found);
-    }
-  });
-});
+    // Retrieve all groups
+    router.get("/api/groups", this.getGroupsApi);
 
-module.exports = router;
+    // Retrieve all groups with specified game type
+    router.post("/api/groups/type", this.getGroupsByTypeApi);
+
+    // Add a member to a group
+    router.put("/api/groups/add-member/:id", this.addMemberApi);
+
+    router.delete("/api/groups/:id", this.deleteGroupApi);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
