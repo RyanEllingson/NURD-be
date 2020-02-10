@@ -5,10 +5,22 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 
+// Load input validation
+const validateGroupInput = require("../../validation/group");
+
+// Load group model
 const Groups = require("../../models/Groups");
 
 module.exports = {
   createGroupApi: async function(req, res) {
+    // Form validation
+    const { errors, isValid } = validateGroupInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const group = await Groups.create(req.body);
     res.json(group);
   },
@@ -26,7 +38,11 @@ module.exports = {
         console.log(error);
       } else {
         const members = found[0].currentMembers;
-        members.push(req.body.name);
+        members.push(
+          {
+            id: req.body.id,
+            name: req.body.name
+          });
         Groups.updateOne(
           {
             _id: mongojs.ObjectId(req.params.id)
