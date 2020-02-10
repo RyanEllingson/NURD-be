@@ -7,6 +7,10 @@ const GroupSchema = new Schema({
     type: String,
     required: true
   },
+  groupTitle: {
+    type: String,
+    required: true
+  },
   gameTitle: {
     type: String,
     required: true
@@ -28,6 +32,9 @@ const GroupSchema = new Schema({
   maxMembers: {
     type: Number,
     default: 0
+  },
+  description: {
+    type: String
   },
   currentMembers: {
     type: Array,
