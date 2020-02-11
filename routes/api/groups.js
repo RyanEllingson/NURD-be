@@ -11,6 +11,9 @@ const validateGroupInput = require("../../validation/group");
 // Load group model
 const Groups = require("../../models/Groups");
 
+// Load user model
+const User = require("../../models/User");
+
 module.exports = {
   createGroupApi: async function(req, res) {
     // Form validation
@@ -57,6 +60,31 @@ module.exports = {
               console.log(error);
             } else {
               res.send(edited);
+              User.find({ _id: mongojs.ObjectId(req.body.id) }, (err, fnd) => {
+                const groups = fnd[0].memberOf;
+                console.log(found);
+                groups.push({
+                  id: found[0]._id,
+                  title: found[0].groupTitle
+                });
+                User.updateOne(
+                  {
+                    _id: mongojs.ObjectId(req.body.id)
+                  },
+                  {
+                    $set: {
+                      memberOf: groups
+                    }
+                  },
+                  (error, edited) => {
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log("Group added to user");
+                    }
+                  }
+                )
+              })
             }
           }
         );

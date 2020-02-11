@@ -38,6 +38,10 @@ const UserSchema = new Schema({
   interests: {
     type: Array,
     default: []
+  },
+  memberOf: {
+    type: Array,
+    default: []
   }
 });
 
