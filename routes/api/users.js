@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
+const mongojs = require("mongojs");
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -52,6 +53,16 @@ router.post("/register", (req, res) => {
     }
   });
 });
+
+router.get("/:id", function(req, res) {
+  User.find({ _id: mongojs.ObjectId(req.params.id) }, (error, found) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(found);
+    }
+  });
+})
 
 // @route POST api/users/login
 // @desc Login user and return JWT token
