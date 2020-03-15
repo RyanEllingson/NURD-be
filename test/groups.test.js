@@ -8,6 +8,7 @@ describe("group", function() {
     it("should be invalid if organizer is empty", function(done) {
         const g = new Group(
             {
+                groupTitle: "test",
                 gameTitle: "test",
                 location: "test",
                 gameType: "test"
@@ -18,10 +19,25 @@ describe("group", function() {
             done();
         });
     });
+    it("should be invalid if groupTitle is empty", function(done) {
+        const g = new Group(
+            {
+                organizer: "test",
+                gameTitle: "test",
+                location: "test",
+                gameType: "test"
+            }
+        );
+        g.validate(function(err) {
+            expect(err.errors.groupTitle).to.exist;
+            done();
+        })
+    })
     it("should be invalid if gameTitle is empty", function(done) {
         const g = new Group(
             {
                 organizer: "test",
+                groupTitle: "test",
                 location: "test",
                 gameType: "test"
             }
@@ -35,6 +51,7 @@ describe("group", function() {
         const g = new Group(
             {
                 organizer: "test",
+                groupTitle: "test",
                 gameTitle: "test",
                 gameType: "test"
             }
@@ -48,6 +65,7 @@ describe("group", function() {
         const g = new Group(
             {
                 organizer: "test",
+                groupTitle: "test",
                 gameTitle: "test",
                 location: "test"
             }
@@ -61,6 +79,7 @@ describe("group", function() {
         const g = new Group(
             {
                 organizer: "test",
+                groupTitle: "test",
                 gameTitle: "test",
                 location: "test",
                 gameType: "test"
